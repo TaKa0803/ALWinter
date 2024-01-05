@@ -54,19 +54,36 @@ public:
 	/// <returns></returns>
 	float GetPCameraR_Y() { return CameraMotionSupport_.rotate_.y; }
 public:
+	//ターゲット設定
 	void SetTarget(const WorldTransform* parent);
 
+	//カメラのターゲットとの距離設定
 	void SetCameraDirection(const float far);
 
+	//メインカメラ座標
+	void SetMainCameraPos(const Vector3& pos) { camerapos_ = pos; }
+
+	//カメラ野注目手座標設定
 	void SetCameraFeaturedPos(const Vector3& pos) { CameraMotionSupport_.translate_ = pos; }
 
-	void SetCameraR_Y(float y) { CameraMotionSupport_.rotate_.y = y; }
+	//カメラの回転量Ysettei 
+	void AddCameraR_Y(float y) { CameraMotionSupport_.rotate_.y += y; }
+
+	void AddCameraR_X(float x) { CameraMotionSupport_.rotate_.x += x; }
+
 private:
 	//カメラ本体
 	WorldTransform mainCamera_;
 
+	//カメラの平行移動
+	Vector3 camerapos_{};
+
 	//カメラの注目点があるときの回転処理用
 	WorldTransform CameraMotionSupport_;
+
+	//カメラの回転量
+	const float maxRotateX = 1.5f;
+	const float minRotateX = 0.2f;
 
 	//注目しているWorldT
 	const WorldTransform* FeaturedWorldTransform_ = nullptr;

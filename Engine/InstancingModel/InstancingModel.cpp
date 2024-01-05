@@ -104,12 +104,16 @@ void InstancingModel::Draw(const Matrix4x4& viewProjection, int texture) {
 	//
 	DXF_->GetCMDList()->SetGraphicsRootConstantBufferView(3, directionalLightResource_->GetGPUVirtualAddress());
 
-	if (texture == -1) {
-		DXF_->GetCMDList()->SetGraphicsRootDescriptorTable(2, texture_);
-	}
-	else {
-		//SRVのDescriptorTableの先頭を設定。２はParameter[2]である。
-		DXF_->GetCMDList()->SetGraphicsRootDescriptorTable(2, SRVManager::GetInstance()->GetTextureDescriptorHandle(texture));
+	if (setTexture_ == -1) {
+		if (texture == -1) {
+			DXF_->GetCMDList()->SetGraphicsRootDescriptorTable(2, texture_);
+		}
+		else {
+			//SRVのDescriptorTableの先頭を設定。２はParameter[2]である。
+			DXF_->GetCMDList()->SetGraphicsRootDescriptorTable(2, SRVManager::GetInstance()->GetTextureDescriptorHandle(texture));
+		}
+	}else{
+		DXF_->GetCMDList()->SetGraphicsRootDescriptorTable(2, SRVManager::GetInstance()->GetTextureDescriptorHandle(setTexture_));
 	}
 	DXF_->GetCMDList()->SetGraphicsRootDescriptorTable(1, instancingHandle_);
 

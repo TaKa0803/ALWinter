@@ -1,13 +1,25 @@
 {
-	"modelPathFile": {
-		"ALPlayer": [ "resources", "ALPlayer" ],
-		"plane": [ "resources", "plane" ],
-		"player": [ "resources", "player" ]
-	},
+  "modelPathFile": {
+    "ALPlayer": [ "resources", "ALPlayer" ],
+    "plane": [ "resources", "plane" ],
+    "player": [ "resources", "player" ],
+    "Head": [ "resources/Object", "Head" ],
+    "LArm": [ "resources/Object", "LArm" ],
+    "RArm": [ "resources/Object", "RArm" ],
+    "LFoot": [ "resources/Object", "LFoot" ],
+    "RFoot": [ "resources/Object", "RFoot" ]
 
-	"InstancingmodelPathFile": {
-		"ALPlayer": [ "resources", "ALPlayer",1 ],
-		"plane": [ "resources", "plane",1 ],
-		"player": [ "resources", "player",100 ]
-	}
+  },
+
+  "InstancingmodelPathFile": {
+    "ALPlayer": [ "resources", "ALPlayer", 1 ],
+    "plane": [ "resources", "plane", 1 ],
+    "player": [ "resources", "player", 100 ],
+    "Head": [ "resources/Object", "Head", 100 ],
+    "LArm": [ "resources/Object", "LArm", 100 ],
+    "RArm": [ "resources/Object", "RArm", 100 ],
+    "LFoot": [ "resources/Object", "LFoot", 100 ],
+    "RFoot": [ "resources/Object", "RFoot", 100 ],
+    "Flag": [ "resources/Object", "Flag", 50 ]
+  }
 }

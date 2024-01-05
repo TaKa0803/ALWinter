@@ -12,6 +12,7 @@ DirectX::ScratchImage LoadTexture(const std::string& filePath) {
 	
 	HRESULT hr = DirectX::LoadFromWICFile(filePathW.c_str(), DirectX::WIC_FLAGS_FORCE_SRGB, nullptr, image);
 	assert(SUCCEEDED(hr));
+	
 
 	/**/
 	DirectX::ScratchImage mipImages{};
@@ -123,9 +124,10 @@ int TextureManager::LoadTex(const std::string& filePath)
 
 		DirectX::ScratchImage mipImages = LoadTexture(filePath);
 
+		
 
 		//入れた画像の管理番号を返す
-		return TextureManager::GetInstance()->CreateData(filePath,mipImages);
+		return TextureManager::GetInstance()->CreateData(filePath, mipImages);
 		
 	}
 	else {

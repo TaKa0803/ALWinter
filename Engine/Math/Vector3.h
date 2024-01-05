@@ -7,6 +7,7 @@ public:
 	float y=0;
 	float z=0;
 
+	
 #pragma region 演算子オーバーロード
 	friend Vector3 operator-(const Vector3& v) { return { -v.x,-v.y,-v.z }; }
 	friend Vector3 operator+(const Vector3& v) { return v; }
@@ -32,9 +33,12 @@ public:
 #pragma endregion
 public:
 #pragma region 計算して反映
-	void SetNormalize();
+	Vector3 SetNormalize();
 
 	float GetLength();
+
+	//ゼロにする
+	void SetZero() { x = 0; y = 0; z = 0; }
 #pragma endregion
 
 

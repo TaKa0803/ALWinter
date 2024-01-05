@@ -57,8 +57,7 @@ void MainSystem::Initializes() {
 
 
 	//モデルデータ関係
-	//ModelManager* mManager = ModelManager::GetInstance();
-	//mManager->LoadAllModels();
+	ModelManager::GetInstance()->LoadAllModels();
 
 	//
 	instancingMM_ = InstancingModelManager::GetInstance();

@@ -53,9 +53,6 @@
     <Filter Include="Engine\Input">
       <UniqueIdentifier>{21cc0232-8675-4bf7-be83-79a6f2d067da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\IScene">
-      <UniqueIdentifier>{78480750-f44d-4f35-bb5b-f1717e439f9b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Log">
       <UniqueIdentifier>{d9fb2fe6-daf0-424a-b91b-ded5c83c9fb2}</UniqueIdentifier>
     </Filter>
@@ -164,6 +161,9 @@
     <Filter Include="Engine\Instancing\InstancingModelManager">
       <UniqueIdentifier>{5a2b32d6-3602-4ee4-82cd-5e993174b817}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Scene\IScene">
+      <UniqueIdentifier>{78480750-f44d-4f35-bb5b-f1717e439f9b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\Imgui\imgui.cpp">
@@ -219,7 +219,7 @@
       <Filter>Engine\Input</Filter>
     </ClCompile>
     <ClCompile Include="Engine\IScene\IScene.cpp">
-      <Filter>Engine\IScene</Filter>
+      <Filter>Application\Scene\IScene</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Log\Log.cpp">
       <Filter>Engine\Log</Filter>
@@ -397,7 +397,7 @@
       <Filter>Engine\Input</Filter>
     </ClInclude>
     <ClInclude Include="Engine\IScene\IScene.h">
-      <Filter>Engine\IScene</Filter>
+      <Filter>Application\Scene\IScene</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Log\Log.h">
       <Filter>Engine\Log</Filter>
@@ -522,6 +522,9 @@
     </None>
     <None Include="resources\shaders\InstancingObject.hlsli">
       <Filter>リソース ファイル\shaders\InstancingObject</Filter>
+    </None>
+    <None Include="resources\PlayerATKData.json">
+      <Filter>リソース ファイル</Filter>
     </None>
   </ItemGroup>
 </Project>

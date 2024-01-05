@@ -39,6 +39,8 @@ public:
 	bool SerchTag(const std::string& tag);
 
 	void SetWorld(const std::string& tag, const WorldTransform& world);
+
+	void SetTexture(const std::string& tag, int texture);
 private:
 
 	//jsonのパス

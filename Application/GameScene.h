@@ -36,6 +36,9 @@ private:
 	//カメラクラス
 	std::unique_ptr<Camera> camera_;
 
+	float xrotateNum = 0.05f;
+	float yrotatenum = 0.02f;
+
 	///以下ゲーム実装
 	std::unique_ptr<Player>player_;
 

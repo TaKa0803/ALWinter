@@ -56,6 +56,6 @@ private:
 	const size_t maxModelData = 256;
 
 	//GetModelDataでモデルが見つからない場合エラーをはくか否か
-	bool isError = false;
+	bool isError = true;
 };
 

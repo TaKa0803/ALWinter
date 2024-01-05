@@ -92,6 +92,8 @@ public:
 	void SetFillMode(FillMode fillmode) { pso_->SetFillMode(fillmode); }
 
 	void SetTag(const std::string& tag) { tag_ = tag; }
+
+	void SetTexture(int tex) { setTexture_ = tex; }
 #pragma endregion
 
 	/// <summary>
@@ -137,6 +139,7 @@ private:
 	//頂点数
 	int point_;
 
+	int setTexture_ = -1;
 
 	ID3D12Resource* vertexData_;
 	//頂点バッファビューを作成する

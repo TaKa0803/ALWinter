@@ -49,12 +49,20 @@ public:
 	//WASD(XZ面
 	Vector3 GetWASD();
 
-
+	//コントローラーが接続されているか
 	bool IsControllerActive();
 
+	//どれかボタンを押したか
+	bool IsPushSomeButtons();
+
+	//ジョイスティック右取得
 	Vector2 GetjoyStickR();
 
+	//ジョイスティック左取得
 	Vector2 GetjoyStickL();
+
+	//yを0にしたxzで値を変換
+	Vector3 GetjoyStickLV3();
 
 	bool IsPushButton(kPadButton kButton);
 

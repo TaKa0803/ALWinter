@@ -8,7 +8,7 @@ Vector3 Cross(const Vector3& v1, const Vector3& v2) {
 }
 
 
-void Vector3::SetNormalize() {
+Vector3 Vector3::SetNormalize() {
 
 	float length = sqrtf(x * x + y * y + z * z);
 	if (length != 0) {
@@ -17,6 +17,7 @@ void Vector3::SetNormalize() {
 		y = num.y;
 		z = num.z;
 	}
+	return *this;
 }
 
 float Vector3::GetLength() {

@@ -125,3 +125,14 @@ void InstancingModelManager::SetWorld(const std::string& tag, const WorldTransfo
 	}
 
 }
+
+void InstancingModelManager::SetTexture(const std::string& tag, int texture) {
+	//タグのモデルデータ探索
+	for (auto& model : modeldatas_) {
+		//タグを発見
+		if (model->GetTag() == tag) {
+			//ワールドを追加
+			model->SetTexture(texture);
+		}
+	}
+}

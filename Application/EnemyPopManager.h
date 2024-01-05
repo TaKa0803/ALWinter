@@ -74,7 +74,15 @@ private:
 	//プレイヤーの座標
 	const  WorldTransform* playerWorld_=nullptr;
 
+	float spawnHeight = 1.5f;
 
+	//モデルにアクセスするタグ
+	std::string flag_="Flag";
 
+	std::string ring_ = "ring";
+
+	std::vector<WorldTransform>flagWorlds_;
+
+	std::vector<WorldTransform>ringWorlds_;
 };
 

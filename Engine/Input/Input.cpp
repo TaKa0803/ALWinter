@@ -13,16 +13,15 @@ Input* Input::GetInstance() {
 	return &instance;
 }
 
-void Input::Initialize(WindowApp*winApp)
-{
+void Input::Initialize(WindowApp* winApp) {
 
-	
+
 	//インスタンス生成
 	ComPtr<IDirectInput8>directInput = nullptr;
 	HRESULT hr = DirectInput8Create(winApp->GetWc().hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
 	assert(SUCCEEDED(hr));
 	//キーボードデバイス
-	
+
 	hr = directInput->CreateDevice(GUID_SysKeyboard, &keyboad, NULL);
 	assert(SUCCEEDED(hr));
 
@@ -36,21 +35,20 @@ void Input::Initialize(WindowApp*winApp)
 
 }
 
-void Input::Update()
-{
+void Input::Update() {
 
 	memcpy(preKey, key, sizeof(key));
 
-	preJoyState_=joyState;
+	preJoyState_ = joyState;
 
 	//キーボード情報取得開始
 	keyboad->Acquire();
 
-	
+
 	keyboad->GetDeviceState(sizeof(key), key);
 
 
-	DWORD res= XInputGetState(0, &joyState);
+	DWORD res = XInputGetState(0, &joyState);
 	if (res != ERROR_SUCCESS) {
 		//assert(false);
 	}
@@ -93,15 +91,35 @@ Vector3 Input::GetWASD() {
 
 bool Input::IsControllerActive() {
 
-	if (XInputGetState(0, &joyState)==ERROR_SUCCESS) {
+	if (XInputGetState(0, &joyState) == ERROR_SUCCESS) {
 		return true;
 	}
-	
+
+	return false;
+}
+
+bool Input::IsPushSomeButtons() {
+
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+		return true;
+	}
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B) {
+		return true;
+	}
+
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X) {
+		return true;
+	}
+
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_Y) {
+		return true;
+	}
+
 	return false;
 }
 
 Vector2 Input::GetjoyStickR() {
-	Vector2 r= {
+	Vector2 r = {
 		(float)joyState.Gamepad.sThumbRX / SHRT_MAX,
 		(float)joyState.Gamepad.sThumbRY / SHRT_MAX,
 	};
@@ -129,14 +147,39 @@ Vector2 Input::GetjoyStickL() {
 	};
 	if (r.x > 0 && r.x < deadLine_) {
 		r.x = 0;
-	}else if (r.x < 0 && r.x > -deadLine_) {
+	}
+	else if (r.x < 0 && r.x > -deadLine_) {
 		r.x = 0;
 	}
 
 	if (r.y > 0 && r.y < deadLine_) {
 		r.y = 0;
-	}else if (r.y < 0 && r.y > -deadLine_) {
+	}
+	else if (r.y < 0 && r.y > -deadLine_) {
 		r.y = 0;
+	}
+
+	return r;
+}
+
+Vector3 Input::GetjoyStickLV3() {
+	Vector3 r = {
+		(float)joyState.Gamepad.sThumbLX / SHRT_MAX,
+		0,
+		(float)joyState.Gamepad.sThumbLY / SHRT_MAX,
+	};
+	if (r.x > 0 && r.x < deadLine_) {
+		r.x = 0;
+	}
+	else if (r.x < 0 && r.x > -deadLine_) {
+		r.x = 0;
+	}
+
+	if (r.z > 0 && r.z < deadLine_) {
+		r.z = 0;
+	}
+	else if (r.z < 0 && r.z > -deadLine_) {
+		r.z = 0;
 	}
 
 	return r;
@@ -197,11 +240,11 @@ bool Input::IsPushButton(kPadButton kButton) {
 		}
 		break;
 	default:
-	
+
 		break;
 	}
 
-	
+
 	return false;
 }
 
@@ -240,7 +283,7 @@ bool Input::IsTriggerButton(kPadButton kButton) {
 			break;
 
 		case kUp:
-			if (preJoyState_.Gamepad.wButtons& XINPUT_GAMEPAD_DPAD_UP) {
+			if (preJoyState_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP) {
 				return false;
 			}
 			break;

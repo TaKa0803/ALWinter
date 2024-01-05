@@ -29,15 +29,24 @@ void Camera::Initialize() {
 
 void Camera::Update() {
 
+	//回転量Xの制限
+	if (CameraMotionSupport_.rotate_.x < minRotateX) {
+		CameraMotionSupport_.rotate_.x = minRotateX;
+	}
+	else if (CameraMotionSupport_.rotate_.x > maxRotateX) {
+		CameraMotionSupport_.rotate_.x = maxRotateX;
+	}
+
 
 	//注目するものがあるとき
 	if (FeaturedWorldTransform_) {
 		//座標のみ取得するフラグが起動しているとき
 		if (isOnlyGetPosition) {
-			CameraMotionSupport_.translate_ = FeaturedWorldTransform_->GetMatWorldTranslate();
+			CameraMotionSupport_.translate_ = camerapos_+FeaturedWorldTransform_->GetMatWorldTranslate();
 			CameraMotionSupport_.UpdateMatrix();
 		}
 		else {
+			CameraMotionSupport_.translate_ = camerapos_;
 			CameraMotionSupport_.UpdateMatrix();
 			//起動していないとき行列をかけて親子関係処理
 			CameraMotionSupport_.matWorld_ = CameraMotionSupport_.matWorld_* FeaturedWorldTransform_->matWorld_;
@@ -59,7 +68,8 @@ void Camera::DrawDebugWindow(const char* name) {
 
 	if (ImGui::BeginMenu(name)) {
 		ImGui::Text("mainCamera");
-		ImGui::DragFloat3("mainC pos", &mainCamera_.translate_.x, 0.01f);		
+		ImGui::DragFloat3("mainC pos", &camerapos_.x, 0.01f);
+		ImGui::DragFloat("targetFar", &mainCamera_.translate_.z, 0.01f);
 		ImGui::DragFloat3("mainC rotate", &mainCamera_.rotate_.x, 0.01f);
 		ImGui::DragFloat3("mainC scale", &mainCamera_.scale_.x, 0.01f);
 
@@ -70,22 +80,7 @@ void Camera::DrawDebugWindow(const char* name) {
 		ImGui::Checkbox("isOnlyGetPosition", &isOnlyGetPosition);
 		ImGui::EndMenu();
 	}
-	else {
 
-		ImGui::Begin(name);
-		ImGui::Text("mainCamera");
-		ImGui::DragFloat2("mainC pos", &mainCamera_.translate_.x, 0.01f);
-		ImGui::DragFloat("mainC farZ", &mainCamera_.translate_.z);
-		ImGui::DragFloat3("mainC rotate", &mainCamera_.rotate_.x, 0.01f);
-		ImGui::DragFloat3("mainC scale", &mainCamera_.scale_.x, 0.01f);
-
-		ImGui::Text("LocationCenterMotion");
-		ImGui::DragFloat3("PCM pos", &CameraMotionSupport_.translate_.x, 0.01f);
-		ImGui::DragFloat3("PCM rotate", &CameraMotionSupport_.rotate_.x, 0.01f);
-		ImGui::DragFloat3("PCM scale", &CameraMotionSupport_.scale_.x, 0.01f);
-		ImGui::Checkbox("isOnlyGetPosition", &isOnlyGetPosition);
-		ImGui::End();
-	}
 #endif // _DEBUG
 
 }

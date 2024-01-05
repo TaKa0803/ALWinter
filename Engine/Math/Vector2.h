@@ -1,10 +1,11 @@
 #pragma once
 
-
 class Vector2 {
 public:
 	float x;
 	float y;	
+
+	Vector2 Normalize();
 
 	Vector2& operator+(Vector2 v) { x += v.x; y += v.y; return *this; }
 	Vector2& operator-(Vector2 v) { x -= v.x; y -= v.y; return *this; }
