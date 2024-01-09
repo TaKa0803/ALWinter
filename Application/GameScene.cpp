@@ -112,6 +112,7 @@ void GameScene::Initialize() {
 
 
 	brokenBody_->Initialize();
+
 }
 
 
@@ -167,6 +168,8 @@ void GameScene::Update() {
 		LimitUI();
 
 		brokenBody_->Update();
+
+		
 #pragma endregion
 
 		break;
@@ -207,7 +210,6 @@ void GameScene::Draw() {
 
 	brokenBody_->Draw();
 
-	
 	switch (scene_) {
 	case GameScene::Game:
 
@@ -229,13 +231,18 @@ void GameScene::Draw() {
 }
 
 void GameScene::DebugWindows() {
-	//カメラのデバッグ表示
+
+#ifdef _DEBUG
+//カメラのデバッグ表示
 	camera_->DrawDebugWindow("camera");
 
 	//プレイヤーデバッグ表示
 	player_->DebugWindow("player");
 
 	plane_->DebagWindow();
+#endif // _DEBUG
+
+	
 
 	//skillSp_->DrawDebugImGui("skill");
 	//BButton_->DrawDebugImGui("BButton");
@@ -246,12 +253,14 @@ void GameScene::DebugWindows() {
 
 void GameScene::Collision() {
 
-	for (auto& enemy : enemies_) {
-		if (!enemy->GetDead()) {
-			enemy->Collision(*player_->GetCollider());
+
+	if (player_->IsPlayerATK()) {
+		for (auto& enemy : enemies_) {
+			if (!enemy->GetDead()) {
+				enemy->Collision(*player_->GetCollider());
+			}
 		}
 	}
-
 }
 
 void GameScene::SceneChange() {

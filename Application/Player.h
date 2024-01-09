@@ -45,6 +45,11 @@ public:
 	SphereCollider* GetCollider() { return collider_.get(); }
 
 	int GetConboCount() { return ATKConboCount; }
+
+	bool IsPlayerATK() {
+		if (state_ == State::ATK) { return true; }
+		return false;
+	}
 private://メンバ関数
 
 

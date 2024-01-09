@@ -234,6 +234,7 @@ void Enemy::Collision(const SphereCollider& collider) {
 		velocity_.z = direc.z;
 
 		HP_--;
+
 	}
 
 }
@@ -242,6 +243,7 @@ void Enemy::Draw() {
 
 	int IndexX = 0;
 	for (auto& world : mWorlds) {
+		world.UpdateMatrix();
 		IMM_->SetWorld(tags[IndexX], world);
 		IndexX++;
 	}

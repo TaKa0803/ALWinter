@@ -99,14 +99,15 @@ void MainSystem::MainRoop() {
 		input->Update();
 		///=以下更新=//
 
-		GlobalVariables::GetInstance()->Update();
+#ifdef _DEBUG
+GlobalVariables::GetInstance()->Update();
 
+#endif // _DEBUG
+
+		
 		sceneManager->Update();
 		//dScene->Update();
 		//mt4->Update();
-
-		//開発用UIの処理。実際に開発用のUIを出す場合はここをゲーム固有の処理に書き換える
-		ImGui::ShowDemoWindow();
 
 
 		//==更新終わり==//
