@@ -21,10 +21,11 @@ Sprite::~Sprite() {
 
 void Sprite::DrawDebugImGui(const char* name) {
 
-	Vector4 color = materialData_->color;
+	
 #ifdef _DEBUG
+	Vector4 color = materialData_->color;
 	ImGui::Begin(name);
-	ImGui::DragFloat2("pos", &world_.translate_.x, 0.1f);
+	ImGui::DragFloat3("pos", &world_.translate_.x, 0.1f);
 	ImGui::DragFloat("rotate", &world_.rotate_.z);
 	ImGui::DragFloat2("scale", &world_.scale_.x, 0.01f);
 
@@ -51,11 +52,14 @@ void Sprite::DrawDebugImGui(const char* name) {
 
 }
 
-Sprite* Sprite::Create(int texture, const Vector2 size, const Vector2 Rect, const Vector2 translate, const float rotate, const Vector2 scale, const Vector2 anchor) {
+
+
+
+Sprite* Sprite::Create(int texture, const Vector2 size, const Vector2 Rect, const Vector2 scale , const Vector2 translate, const Vector2 anchor, const float rotate) {
 	DirectXFunc* DXF = DirectXFunc::GetInstance();
 	
 	WorldTransform newWorld;
-	newWorld.translate_ = { translate.x,translate.y,1 };
+	newWorld.translate_ = { translate.x,translate.y,0 };
 	newWorld.rotate_.z = rotate;
 	newWorld.scale_ = { scale.x,scale.y,1 };
 #pragma region Sprite
@@ -139,7 +143,7 @@ Sprite* Sprite::Create(int texture, const Vector2 size, const Vector2 Rect, cons
 }
 
 
-
+/*
 Sprite* Sprite::Create(int texture, const Vector2 translate, const float rotate, const Vector2 scale, const Vector2 anchor) {
 
 	DirectXFunc* DXF = DirectXFunc::GetInstance();
@@ -230,7 +234,7 @@ Sprite* Sprite::Create(int texture, const Vector2 translate, const float rotate,
 	return sprite;
 
 }
-
+*/
 
 
 void Sprite::Initialize(int texture,

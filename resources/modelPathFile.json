@@ -12,14 +12,16 @@
   },
 
   "InstancingmodelPathFile": {
+    "sphere": [ "Engine/ResourceObject", "sphere", 500 ],
     "ALPlayer": [ "resources", "ALPlayer", 1 ],
     "plane": [ "resources", "plane", 1 ],
     "player": [ "resources", "player", 100 ],
-    "Head": [ "resources/Object", "Head", 100 ],
-    "LArm": [ "resources/Object", "LArm", 100 ],
-    "RArm": [ "resources/Object", "RArm", 100 ],
-    "LFoot": [ "resources/Object", "LFoot", 100 ],
-    "RFoot": [ "resources/Object", "RFoot", 100 ],
-    "Flag": [ "resources/Object", "Flag", 50 ]
+    "Head": [ "resources/Object", "Head", 1000 ],
+    "LArm": [ "resources/Object", "LArm", 1000 ],
+    "RArm": [ "resources/Object", "RArm", 1000 ],
+    "LFoot": [ "resources/Object", "LFoot", 1000 ],
+    "RFoot": [ "resources/Object", "RFoot", 1000 ],
+    "Flag": [ "resources/Object", "Flag", 10 ],
+    "EBox": [ "resources/Particle","EBox",5000 ]
   }
 }

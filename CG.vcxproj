@@ -106,11 +106,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application\BrokenBody.cpp" />
     <ClCompile Include="Application\DebugScene.cpp" />
     <ClCompile Include="Application\EffectHit.cpp" />
     <ClCompile Include="Application\Enemy.cpp" />
     <ClCompile Include="Application\EnemyPopManager.cpp" />
     <ClCompile Include="Application\GameScene.cpp" />
+    <ClCompile Include="Application\item.cpp" />
     <ClCompile Include="Application\MT4Scene.cpp" />
     <ClCompile Include="Application\Plane.cpp" />
     <ClCompile Include="Application\Player.cpp" />
@@ -145,6 +147,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Quaternion\Quaternion.cpp" />
     <ClCompile Include="Engine\RandomNum\RandomNum.cpp" />
     <ClCompile Include="Engine\SpCommon\SpCommon.cpp" />
+    <ClCompile Include="Engine\SphereCollider\SphereCollider.cpp" />
     <ClCompile Include="Engine\Sprite\Sprite.cpp" />
     <ClCompile Include="Engine\SRVManager\SRVManager.cpp" />
     <ClCompile Include="Engine\TextureManager\TextureManager.cpp" />
@@ -186,11 +189,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application\BrokenBody.h" />
     <ClInclude Include="Application\DebugScene.h" />
     <ClInclude Include="Application\EffectHit.h" />
     <ClInclude Include="Application\Enemy.h" />
     <ClInclude Include="Application\EnemyPopManager.h" />
     <ClInclude Include="Application\GameScene.h" />
+    <ClInclude Include="Application\item.h" />
     <ClInclude Include="Application\MT4Scene.h" />
     <ClInclude Include="Application\Plane.h" />
     <ClInclude Include="Application\Player.h" />
@@ -226,6 +231,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Quaternion\Quaternion.h" />
     <ClInclude Include="Engine\RandomNum\RandomNum.h" />
     <ClInclude Include="Engine\SpCommon\SpCommon.h" />
+    <ClInclude Include="Engine\SphereCollider\SphereCollider.h" />
     <ClInclude Include="Engine\Sprite\Sprite.h" />
     <ClInclude Include="Engine\SRVManager\SRVManager.h" />
     <ClInclude Include="Engine\TextureManager\TextureManager.h" />

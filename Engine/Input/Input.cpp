@@ -89,6 +89,27 @@ Vector3 Input::GetWASD() {
 	return ans;
 }
 
+
+Vector3 Input::GetAllArrowKey() {
+	Vector3 result;
+
+	if (key[DIK_UP]) {
+		result.z += 1;
+	}
+	if (key[DIK_DOWN]) {
+		result.z -= 1;
+	}
+	if (key[DIK_RIGHT]) {
+		result.x += 1;
+	}
+	if (key[DIK_LEFT]) {
+		result.x -= 1;
+	}
+
+	return result;
+
+}
+
 bool Input::IsControllerActive() {
 
 	if (XInputGetState(0, &joyState) == ERROR_SUCCESS) {

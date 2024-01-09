@@ -164,6 +164,15 @@
     <Filter Include="Application\Scene\IScene">
       <UniqueIdentifier>{78480750-f44d-4f35-bb5b-f1717e439f9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\SphereCollider">
+      <UniqueIdentifier>{4c6856cb-787f-4abf-8283-d771d9687677}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\item">
+      <UniqueIdentifier>{3be0ad49-44a3-41d3-8c28-6055f6dfcf71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Effect_BreakBody">
+      <UniqueIdentifier>{b4a625f7-324e-47b6-9f18-86de619c933d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\Imgui\imgui.cpp">
@@ -319,6 +328,15 @@
     </ClCompile>
     <ClCompile Include="Engine\Instancing\InstancingGameObject.cpp">
       <Filter>Engine\Instancing\InstancingGameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\SphereCollider\SphereCollider.cpp">
+      <Filter>Engine\SphereCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\item.cpp">
+      <Filter>Application\item</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\BrokenBody.cpp">
+      <Filter>Application\Effect_BreakBody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -500,6 +518,15 @@
     </ClInclude>
     <ClInclude Include="Engine\InstancingModelManager\InstancingModelManager.h">
       <Filter>Engine\Instancing\InstancingModelManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SphereCollider\SphereCollider.h">
+      <Filter>Engine\SphereCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\item.h">
+      <Filter>Application\item</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\BrokenBody.h">
+      <Filter>Application\Effect_BreakBody</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

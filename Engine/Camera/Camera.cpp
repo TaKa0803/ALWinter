@@ -1,12 +1,17 @@
 #include"Camera.h"
 #include"WinApp/WinApp.h"
 #include<imgui.h>
+#include<numbers>
 
 Camera::Camera() {}
 
 Camera::~Camera() {}
 
 void Camera::Initialize() {
+
+	mainCamera_.Initialize();
+	CameraMotionSupport_.Initialize();
+	FeaturedWorldTransform_ = nullptr;
 
 	//カメラの初期距離を設定
 	mainCamera_.translate_.z = rangeCameraFeaturedPoint;
@@ -37,6 +42,13 @@ void Camera::Update() {
 		CameraMotionSupport_.rotate_.x = maxRotateX;
 	}
 
+	//一週以上している場合制限
+	if (CameraMotionSupport_.rotate_.y > (float)std::numbers::pi*2.0f) {
+		CameraMotionSupport_.rotate_.y -= (float)std::numbers::pi*2.0f;
+	}
+	if (CameraMotionSupport_.rotate_.y < -(float)std::numbers::pi*2.0f) {
+		CameraMotionSupport_.rotate_.y += (float)std::numbers::pi*2.0f;
+	}
 
 	//注目するものがあるとき
 	if (FeaturedWorldTransform_) {

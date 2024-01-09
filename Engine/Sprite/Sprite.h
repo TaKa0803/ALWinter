@@ -26,17 +26,20 @@ public:
 	/// <param name="texture">画像の要素番号</param>
 	/// <param name="anchor">アンカー</param>
 	/// <returns>データ返却</returns>
-	static Sprite* Create(int texture,const Vector2 translate={640,360}, const float rotate=0, const Vector2 scale={1,1}, const Vector2 anchor = {0.5f,0.5f});
+	//static Sprite* Create(int texture,const Vector2 translate={640,360}, const float rotate=0, const Vector2 scale={1,1}, const Vector2 anchor = {0.5f,0.5f});
 
 	/// <summary>
-	/// スプライト作成
+	/// 画像データ生成
 	/// </summary>
-	/// <param name="texture">画像の要素番号</param>
-	/// <param name="size">画像サイズ</param>
-	/// <param name="Rect">画像のどのサイズ描画するか</param>
+	/// <param name="texture">画像番号</param>
+	/// <param name="size">元画像のサイズ</param>
+	/// <param name="Rect">元画像の描画する範囲</param>
+	/// <param name="translate">座標</param>
+	/// <param name="rotate">回転量</param>
+	/// <param name="scale">描画時の画像サイズ</param>
 	/// <param name="anchor">アンカー</param>
-	/// <returns>データ返却</returns>
-	static Sprite* Create(int texture, const Vector2 size,const Vector2 Rect, const Vector2 translate = { 640,360 }, const float rotate = 0, const Vector2 scale = { 1,1 }, const Vector2 anchor = { 0.5f,0.5f });
+	/// <returns>画像サイズ</returns>
+	static Sprite* Create(int texture, const Vector2 size,const Vector2 Rect, const Vector2 scale = { 1,1 }, const Vector2 translate = { 640,360 },  const Vector2 anchor = { 0.5f,0.5f }, const float rotate = 0);
 
 	/// <summary>
 	/// デバッグウィンドウ表示
@@ -89,6 +92,8 @@ public:///セッター
 	/// <param name="color"></param>
 	void SetMaterialDataColor(const Vector4& color) { materialData_->color = color; }
 
+	void SetColorAlpha(float alpha) { materialData_->color.w = alpha; }
+
 	/// <summary>
 	/// 画像を使うか否か
 	/// </summary>
@@ -103,7 +108,7 @@ public:///セッター
 	
 	Vector3 GetScale()const { return world_.scale_; }
 
-
+	Vector3 GetPosition() { return world_.translate_; }
 private:
 
 	struct WorldTransformation {

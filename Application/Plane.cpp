@@ -1,8 +1,12 @@
 #include "Plane.h"
 
-void Plane::Initialize() {
+Plane::Plane() {
 	GameObject::Initialize("plane");
 
+}
+
+void Plane::Initialize() {
+	
 	world_.scale_ = { 500,500,500 };
 	model_->SetUVScale({ 500,500,500 });
 	world_.UpdateMatrix();

@@ -1,5 +1,9 @@
 #pragma once
 #include"Instancing/InstancingGameObject.h"
+#include"SphereCollider/SphereCollider.h"
+#include<iostream>
+#include"item.h"
+
 
 class Enemy : public InstancingGameObject {
 
@@ -14,14 +18,21 @@ public:
 	/// </summary>
 	void Update();
 
+	void Collision(const SphereCollider&collider);
+
 	/// <summary>
 	/// 
 	/// </summary>
-	void Draw(const Matrix4x4& view);
+	void Draw();
+
+	//死んだか否か
+	bool GetDead() { return isDead_; }
 
 private:
 	//プレイヤーのワールド
 	const WorldTransform* playerWorld_;
+
+	std::unique_ptr<SphereCollider>collider_;
 
 #pragma region モデル関係
 	//モデルの数
@@ -46,6 +57,24 @@ private:
 
 	WorldTransform mWorlds[modelNum_] = {};
 
+
+	//歩くアニメーション
+	ModelAnimeParts walkData_;
+
+	//止まったモーション
+	ModelAnimeParts stopData_;
+
+	ModelAnimeParts nowRoop_;
+
+	int roopCount_ = 0;
+
+	enum MoveState {
+		StopS,
+		MoveS,
+		NoneS
+	};
+
+	MoveState moveState_ = NoneS;
 #pragma endregion
 
 
@@ -66,4 +95,30 @@ private:
 
 	//ugokanakunarukyori
 	float stopRange_ =10.0f;
+
+	//探知距離
+	float serchRange_ = 30.0f;
+
+
+	enum State {
+		Normal,
+		Hit
+	};
+
+	State state_ = Normal;
+
+
+	const Vector3 hitVelo = { 0,1.5f,0 };
+	//加速度
+	Vector3 acce = { 0,-0.1f,0 };
+
+	//吹っ飛び量
+	float hitSPD_ = 0.5f;
+
+
+	bool isDead_=false;
+
+	int HP_ = 1;
+
+	float tHeight = 0;
 };

@@ -22,6 +22,8 @@ public://変数
 
 public:
 
+	void Initialize();
+
 	/// <summary>
 	/// 更新
 	/// </summary>

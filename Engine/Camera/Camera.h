@@ -82,8 +82,8 @@ private:
 	WorldTransform CameraMotionSupport_;
 
 	//カメラの回転量
-	const float maxRotateX = 1.5f;
-	const float minRotateX = 0.2f;
+	const float maxRotateX = 1.0f;
+	const float minRotateX = 0.01f;
 
 	//注目しているWorldT
 	const WorldTransform* FeaturedWorldTransform_ = nullptr;

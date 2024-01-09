@@ -1,57 +1,13 @@
 {
-  "YButtonATK": {
-    "data": [ 0, 10, 5, 1 ],
-
-    "ATKDerivation": {
-      "data": [ 0, 10, 5, 1 ],
-
-      "ATKDerivation": {
-        "data": [ 0, 10, 5, 1 ]
-      },
-
-      "ATKDerivation2": {
-        "data": [ 0, 10, 5, 0 ]
-      }
-    },
-
-    "ATKDerivation2": {
-      "data": [ 0, 10, 5, 0 ],
-
-
-      "ATKDerivation": {
-        "data": [ 0, 10, 5, 1 ]
-      },
-
-      "ATKDerivation2": {
-        "data": [ 0, 10, 5, 0 ]
-      }
-    }
-
-  },
-
 
   "BButtonATK": {
-    "data": [ 0, 10, 5, 0 ],
+    "data": [ 5, 10, 10, 0,1.0 ],
 
     "ATKDerivation": {
-      "data": [ 0, 10, 5, 1 ],
+      "data": [ 0, 10, 5, 1,1.5 ],
 
       "ATKDerivation": {
-        "data": [ 0, 10, 5, 1 ]
-      },
-
-      "ATKDerivation2": {
-        "data": [ 0, 10, 5, 1 ]
-      }
-    },
-
-    "ATKDerivation2": {
-      "ATKDerivation": {
-        "data": [ 0, 10, 5, 0 ]
-      },
-
-      "ATKDerivation2": {
-        "data": [ 0, 10, 5, 1 ]
+        "data": [ 0, 30, 0, 1,1.0 ]
       }
     }
   }

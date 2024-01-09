@@ -2,6 +2,15 @@
 #include"Math/Matrix.h"
 #include<imgui.h>
 
+void WorldTransform::Initialize() {
+	translate_ = { 0.0f,0.0f,0.0f };
+	rotate_ = { 0.0f,0.0f,0.0f };
+	scale_ = { 1.0f,1.0f,1.0f };
+	parent_ = nullptr;
+
+	UpdateMatrix();
+}
+
 Matrix4x4 WorldTransform::UpdateMatrix() {
 	matWorld_ = MakeAffineMatrix(scale_, rotate_, translate_);
 

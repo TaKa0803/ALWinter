@@ -49,6 +49,9 @@ public:
 	//WASD(XZ面
 	Vector3 GetWASD();
 
+	Vector3 GetAllArrowKey();
+
+
 	//コントローラーが接続されているか
 	bool IsControllerActive();
 

@@ -79,31 +79,48 @@ void EnemyPopManager::LoadPopdata() {
 
 
 	flagWorlds_.resize(popDatas_.size());
-	ringWorlds_.resize(flagWorlds_.size());
+	
 
 
 	int Index = 0;
 	for (auto& popData : popDatas_) {
 		//スポーン地点の座標指定
 		flagWorlds_[Index].translate_=popData.areaPosition;
-
-		ringWorlds_[Index].translate_ = popData.areaPosition;
-		ringWorlds_[Index].scale_ = { popData.popAreaSize,popData.popAreaSize ,popData.popAreaSize };
-
 		Index++;
 	}
 
 
 }
 
+void EnemyPopManager::Initialzie() {
+	for (auto& popdata : popDatas_) {
+		popdata.PopIntervalCount = 0;
+		popdata.maxAreaPopCount = 0;
+	}
+}
+
 void EnemyPopManager::Update() {
 
-	InstancingModelManager* IMM = InstancingModelManager::GetInstance();
-
+	
+	int Index = 0;
 	for (auto& world : flagWorlds_) {
-		IMM->SetWorld(flag_, world);
+		if (popDatas_[Index].maxAreaPopCount < popDatas_[Index].maxAreaPop) {
+			world.UpdateMatrix();
+		}
+		Index++;
 	}
 
+}
+
+void EnemyPopManager::Draw() {
+	InstancingModelManager* IMM = InstancingModelManager::GetInstance();
+	int Index = 0;
+	for (auto& world : flagWorlds_) {
+		if (popDatas_[Index].maxAreaPopCount < popDatas_[Index].maxAreaPop) {
+			IMM->SetWorld(flag_, world);
+		}
+		Index++;
+	}
 }
 
 std::unique_ptr<Enemy> EnemyPopManager::PopEnemy() {
@@ -130,9 +147,9 @@ std::unique_ptr<Enemy> EnemyPopManager::PopEnemy() {
 
 					 //出現座標作成
 					 Vector3 newPos{
-						 rNum->Get(-area,area),
+						 popdata.areaPosition.x+rNum->Get(-area,area),
 						 spawnHeight,
-						 rNum->Get(-area,area),
+						 popdata.areaPosition.z+rNum->Get(-area,area),
 					 };
 
 					 //生成インターバルを更新

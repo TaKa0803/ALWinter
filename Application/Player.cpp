@@ -20,12 +20,10 @@ ATKData LoadATKData(nlohmann::json::iterator& itGroup) {
 			data.AttackTime = (float)itItem->at(1);
 			data.RigorTime = (float)itItem->at(2);
 			data.isYATK = (int)itItem->at(3);
+			data.spd = (float)itItem->at(4);
 		}
 		else if (itemName == "ATKDerivation") {
 			//皇族データ保存
-			data.ATKDerivation.push_back(LoadATKData(itItem));
-		}
-		else if (itemName == "ATKDerivation2") {
 			data.ATKDerivation.push_back(LoadATKData(itItem));
 		}
 	}
@@ -43,7 +41,7 @@ void Player::LoadATKDatas() {
 	//読み込み失敗
 	if (ifs.fail()) {
 		assert(false);
-		return ;
+		return;
 	}
 
 	nlohmann::json root;
@@ -53,25 +51,24 @@ void Player::LoadATKDatas() {
 	ifs.close();
 
 
-	
+
 
 	int Index = 0;
 	//攻撃グループ複数読み込み
-	for (auto& groupname : groupNames_) {
 
 		//グループ検索
-		nlohmann::json::iterator itGroup = root.find(groupname);
+	nlohmann::json::iterator itGroup = root.find(groupName_);
 
-		//未登録チェック
-		assert(itGroup != root.end());
+	//未登録チェック
+	assert(itGroup != root.end());
 
-		
-		startATKData_[Index]=LoadATKData(itGroup);
 
-		
+	startATKData_ = LoadATKData(itGroup);
 
-		Index++;
-	}
+
+
+	Index++;
+
 }
 
 
@@ -81,6 +78,10 @@ Player::Player() {
 	input_ = Input::GetInstance();
 
 	input_->SetDeadLine(0.3f);
+
+	collider_ = std::make_unique<SphereCollider>();
+	collider_->Initialize(world_);
+	collider_->SetScale(1.5f);
 
 	//攻撃データの初期化
 	LoadATKDatas();
@@ -95,7 +96,7 @@ Player::Player() {
 
 	textureData = TextureManager::LoadTex("resources/Object/player.png");
 
-	
+
 
 	mWorlds[HEAD].SetParent(&world_);
 	mWorlds[LARM].SetParent(&mWorlds[HEAD]);
@@ -103,23 +104,104 @@ Player::Player() {
 	mWorlds[LFOOT].SetParent(&mWorlds[HEAD]);
 	mWorlds[RFOOT].SetParent(&mWorlds[HEAD]);
 
+
+	walkData_.RoopFrame = 10;
+	walkData_.stPartsWorlds[HEAD].rotate_ = { 0.1f,0.0f,0.0f };
+	walkData_.stPartsWorlds[LARM].rotate_ = { 0.0f,0.0f,-0.2f };
+	walkData_.stPartsWorlds[RARM].rotate_ = { 0.0f,0.0f,0.2f };
+	walkData_.stPartsWorlds[LFOOT].rotate_ = { -0.46f,0.0f,0.0f };
+	walkData_.stPartsWorlds[RFOOT].rotate_ = { 0.2f,0.0f,0.0f };
+
+	walkData_.edPartsWorlds[HEAD].rotate_ = { 0.1f,0.0f,0.0f };
+	walkData_.edPartsWorlds[LARM].rotate_ = { 0.0f,0.0f,0.2f };
+	walkData_.edPartsWorlds[RARM].rotate_ = { 0.0f,0.0f,-0.2f };
+	walkData_.edPartsWorlds[LFOOT].rotate_ = { 0.2f,0.0f,0.0f };
+	walkData_.edPartsWorlds[RFOOT].rotate_ = { -0.46f,0.0f,0.0f };
+
+	stopData_.RoopFrame = 60;
+	stopData_.stPartsWorlds[HEAD].rotate_ = { -0.2f,0.0f,0.0f };
+	stopData_.stPartsWorlds[LARM].rotate_ = { 0.0f,0.0f,0.2f };
+	stopData_.stPartsWorlds[RARM].rotate_ = { 0.0f,0.0f,-0.2f };
+	stopData_.stPartsWorlds[LFOOT].rotate_ = { 0.23f,0.0f,0.0f };
+	stopData_.stPartsWorlds[RFOOT].rotate_ = { 0.23f,0.0f,0.0f };
+
+	stopData_.edPartsWorlds[HEAD].rotate_ = { 0.05f,0.0f,0.0f };
+	stopData_.edPartsWorlds[LARM].rotate_ = { 0.0f,0.0f,0.3f };
+	stopData_.edPartsWorlds[RARM].rotate_ = { 0.0f,0.0f,-0.3f };
+	stopData_.edPartsWorlds[LFOOT].rotate_ = { -0.05f,0.0f,0.0f };
+	stopData_.edPartsWorlds[RFOOT].rotate_ = { -0.05f,0.0f,0.0f };
+
+
+	ATKData1_.stPartsWorlds[HEAD].rotate_ = { -0.1f,0.0f,0.0f };
+	ATKData1_.stPartsWorlds[LARM].rotate_ = { 0.0f,-0.4f,0.0f };
+	ATKData1_.stPartsWorlds[RARM].rotate_ = { 0.0f,-0.7f,0.0f };
+	ATKData1_.stPartsWorlds[LFOOT].rotate_ = { 0.1f,-0.6f,0.0f };
+	ATKData1_.stPartsWorlds[RFOOT].rotate_ = { 0.1f,0.0f,0.0f };
+
+	ATKData1_.edPartsWorlds[HEAD].rotate_ = { 0.3f,0.0f,0.0f };
+	ATKData1_.edPartsWorlds[LARM].rotate_ = { 0.0f,0.83f,0.0f };
+	ATKData1_.edPartsWorlds[RARM].rotate_ = { 0.0f,0.4f,0.0f };
+	ATKData1_.edPartsWorlds[LFOOT].rotate_ = { 0.0f,-0.2f,0.0f };
+	ATKData1_.edPartsWorlds[RFOOT].rotate_ = { 0.0f,0.1f,0.0f };
+
+	for (int Index = 0; Index < modelNum_; ++Index) {
+		ATKData2_.stPartsWorlds[Index] = ATKData1_.edPartsWorlds[Index];
+	}
+
+	ATKData2_.edPartsWorlds[HEAD].rotate_ = { -0.3f,0.0f,0.0f };
+	ATKData2_.edPartsWorlds[LARM].rotate_ = { 0.0f,-0.5f,0.0f };
+	ATKData2_.edPartsWorlds[RARM].rotate_ = { 0.0f,0.5f,0.0f };
+	ATKData2_.edPartsWorlds[LFOOT].rotate_ = { -0.862f,0.0f,0.0f };
+	ATKData2_.edPartsWorlds[RFOOT].rotate_ = { 0.3f,0.0f,0.0f };
+
+	
+
+	ATKData3_.stPartsWorlds[HEAD].rotate_ = { 1.5f,0.0f,0.0f };
+	ATKData3_.stPartsWorlds[LARM].rotate_ = { 0.0f,0.0f,0.0f };
+	ATKData3_.stPartsWorlds[RARM].rotate_ = { 0.0f,0.0f,0.0f };
+	ATKData3_.stPartsWorlds[LFOOT].rotate_ = { 0.5f,0.0f,0.0f };
+	ATKData3_.stPartsWorlds[RFOOT].rotate_ = { 0.5f,0.0f,0.0f };
+
+
+	ATKData3_.edPartsWorlds[HEAD].rotate_ = { 1.5f,0.0f,15.0f };
+	ATKData3_.edPartsWorlds[LARM].rotate_ = { 0.0f,0.0f,0.0f };
+	ATKData3_.edPartsWorlds[RARM].rotate_ = { 0.0f,0.0f,0.0f };
+	ATKData3_.edPartsWorlds[LFOOT].rotate_ = { 0.5f,0.0f,0.0f };
+	ATKData3_.edPartsWorlds[RFOOT].rotate_ = { 0.5f,0.0f,0.0f };
+
+
+	startATKData_.parts = ATKData1_;
+	startATKData_.ATKDerivation[0].parts = ATKData2_;
+	startATKData_.ATKDerivation[0].ATKDerivation[0].parts = ATKData3_;
 }
 
 Player::~Player() {
-	
+
 }
 
 void Player::Initialize() {
+	//中身データ初期化
+	world_.Initialize();
+
 	world_.translate_.y = 1.5f;
 
 	mWorlds[LFOOT].translate_ = { -0.5f,-0.8f,0 };
 	mWorlds[RFOOT].translate_ = { 0.5f,-0.8f,0 };
 
+
+	roopState = SetUp;
+	roopCount_ = 0;
+
+	moveState_ = NoneS;
+
+	ATKConboCount = 1;
+	ATKAnimationSetup_ = false;
+
 }
 
 void Player::Update() {
 
-	
+
 	//状態の初期化処理
 	if (stateRequest_) {
 		state_ = stateRequest_.value();
@@ -133,7 +215,7 @@ void Player::Update() {
 	(this->*StateUpdate[(int)state_])();
 
 	//行列更新
-	
+
 	world_.UpdateMatrix();
 
 	int Index = 0;
@@ -141,7 +223,7 @@ void Player::Update() {
 		world.UpdateMatrix();
 	}
 
-
+	collider_->Update();
 }
 
 void (Player::* Player::StateInitialize[])() = {
@@ -162,7 +244,7 @@ void Player::Draw(const Matrix4x4& viewprojection) {
 	//IGameObject::Draw(viewprojection);
 	//model_->Draw(world_.matWorld_, viewprojection, TextureManager::uvChecker_);
 
-	
+
 	//各モデル描画
 	int Index = 0;
 	for (auto& model : models) {
@@ -170,9 +252,14 @@ void Player::Draw(const Matrix4x4& viewprojection) {
 
 		Index++;
 	}
+
+	//collider_->Draw();
 }
 
 void Player::DebugWindow(const char* name) {
+
+	float cScale = collider_->GetScale();
+
 	ImGui::Begin(name);
 	world_.DrawDebug(name);
 
@@ -182,9 +269,12 @@ void Player::DebugWindow(const char* name) {
 	mWorlds[LFOOT].DrawDebug("LF");
 	mWorlds[RFOOT].DrawDebug("RF");
 
-	
+	ImGui::DragFloat("collider scale", &cScale, 0.1f, 1, 10);
+
 	//model_->DebugParameter(name);
 	ImGui::End();
+
+	collider_->SetScale(cScale);
 }
 
 
@@ -215,6 +305,67 @@ void Player::Move() {
 	world_.translate_ += move;
 
 
+	ModelRoop(move);
+}
+
+
+
+
+
+void Player::ModelRoop(const Vector3& velo) {
+
+	//ベクトル量ゼロでアニメーション
+	if (velo == Vector3(0, 0, 0)) {
+
+		if (moveState_ != StopS) {
+			moveState_ = StopS;
+			
+			nowRoop_ = stopData_;
+			std::swap(nowRoop_.stPartsWorlds, nowRoop_.edPartsWorlds);
+			roopCount_ = 0;
+		}
+	}
+	else {
+
+		if (moveState_ != MoveS) {
+			moveState_ = MoveS;
+			roopCount_ = 0;
+			nowRoop_ = walkData_;
+		}
+
+
+	}
+
+
+
+	//ループ
+
+	roopCount_++;
+
+	float t = (float)roopCount_ / (float)nowRoop_.RoopFrame;
+
+
+	int Index = 0;
+	for (auto& world : mWorlds) {
+		world.rotate_ = Esing(nowRoop_.stPartsWorlds[Index].rotate_, nowRoop_.edPartsWorlds[Index].rotate_, t);
+		Index++;
+	}
+
+	//条件達成
+	if (roopCount_ >= nowRoop_.RoopFrame) {
+		t = 1;
+		int Index = 0;
+		for (auto& world : mWorlds) {
+			world.rotate_ = Esing(nowRoop_.stPartsWorlds[Index].rotate_, nowRoop_.edPartsWorlds[Index].rotate_, t);
+			Index++;
+		}
+		roopCount_ = 0;
+		//値の入れ替え
+		std::swap(nowRoop_.stPartsWorlds, nowRoop_.edPartsWorlds);
+	}
+
+
+
 }
 
 #pragma region 各状態初期化処理
@@ -222,6 +373,10 @@ void Player::Move() {
 
 void Player::InitializeMove() {
 
+	nowRoop_ = stopData_;
+	moveState_ = StopS;
+	std::swap(nowRoop_.stPartsWorlds, nowRoop_.edPartsWorlds);
+	roopCount_ = 0;
 }
 
 void Player::InitializeATK() {
@@ -231,13 +386,12 @@ void Player::InitializeATK() {
 	updateATKData_ = ATKUpdateData{};
 
 	//どちらのボタンが最初かで攻撃ツリー変更
-	if (isPressY) {
-		ATKData_ = startATKData_[0];
-	}
-	else {
-		ATKData_ = startATKData_[0];
-	}
+	
+	ATKData_ = startATKData_;
+	
+	ATKAnimationSetup_ = false;
 
+	ATKConboCount = 1;
 }
 
 void Player::InitializeHitAction() {
@@ -265,27 +419,18 @@ void Player::UpdateMove() {
 	bool isSpecialATK = false;
 
 
-	if (isATK = input_->TriggerKey(DIK_Z)) {
-		isPressY = true;
-	}
-	else if (isATK = input_->TriggerKey(DIK_X)) {
-		isPressY = false;
-	}
-	else {
-		isSpecialATK = input_->TriggerKey(DIK_C);
-	}
+	isATK = input_->TriggerKey(DIK_Z);
+
+	isSpecialATK = input_->TriggerKey(DIK_C);
+	
 
 	//コントローラーがあるときの処理
 	if (input_->IsControllerActive()) {
-		if (isATK = input_->IsTriggerButton(kButtonY)) {
-			isPressY = true;
-		}
-		else if (isATK = input_->IsTriggerButton(kButtonB)) {
-			isPressY = false;
-		}
-		else {
-			isSpecialATK = input_->IsTriggerButton(kButtonX);
-		}		
+
+		isATK = input_->IsTriggerButton(kButtonB);
+		
+		isSpecialATK = input_->IsTriggerButton(kButtonY);
+		
 	}
 
 	if (isATK) {
@@ -300,38 +445,115 @@ void Player::UpdateATK() {
 #pragma region 実行処理
 	if (atkState_ == ATKState::Extra) {
 
-		//予備動作中向き変更
-		Vector3 move{};
-		//データ
-		move = input_->GetWASD();
-		if (input_->IsControllerActive()) {
-			move = input_->GetjoyStickLV3();
+		//初期設定
+		if(!ATKAnimationSetup_){
+			ATKAnimationSetup_ = true;
+
+			for (int partsNum = 0; partsNum < modelNum_; ++partsNum) {
+				nowRoop_.stPartsWorlds[partsNum] = mWorlds[partsNum];
+				nowRoop_.edPartsWorlds[partsNum] = ATKData_.parts.stPartsWorlds[partsNum];
+			}
 		}
+		else {
 
-		move.SetNormalize();
-		//カメラ方向に向ける
-		move = TransformNormal(move, camera_->GetMainCamera().matWorld_);
-		move.y = 0;
+			
 
-		if (move != Vector3(0, 0, 0)) {
-			world_.rotate_.y = GetYRotate({ move.x,move.z });
-		}
+			
 
-		updateATKData_.count++;
-		//条件を満たしたら次の状態へ
-		if (updateATKData_.count >= ATKData_.extraTime) {
-			atkState_ = ATKState::ATK;
-			updateATKData_.count=0;
+			float t = (float)updateATKData_.count / (float)ATKData_.extraTime;
+
+
+			int Index = 0;
+			for (auto& world : mWorlds) {
+				world.rotate_ = Esing(nowRoop_.stPartsWorlds[Index].rotate_, nowRoop_.edPartsWorlds[Index].rotate_, t);
+				Index++;
+			}
+
+
+			updateATKData_.count++;
+			//条件を満たしたら次の状態へ
+			if (updateATKData_.count >= ATKData_.extraTime) {
+				t = 1;
+				int Index = 0;
+				for (auto& world : mWorlds) {
+					world.rotate_ = Esing(nowRoop_.stPartsWorlds[Index].rotate_, nowRoop_.edPartsWorlds[Index].rotate_, t);
+					Index++;
+				}
+
+				atkState_ = ATKState::ATK;
+				updateATKData_.count = 0;
+				ATKAnimationSetup_ = false;
+			}
 
 		}
 	}
 
 	if (atkState_ == ATKState::ATK) {
-		updateATKData_.count++;
-		//条件を満たしたら次の状態へ
-		if (updateATKData_.count >= ATKData_.AttackTime) {
-			atkState_ = ATKState::Rigor;
-			updateATKData_.count=0;
+		if (!ATKAnimationSetup_) {
+			ATKAnimationSetup_ = true;
+			for (int partsNum = 0; partsNum < modelNum_; ++partsNum) {
+				nowRoop_.stPartsWorlds[partsNum] = mWorlds[partsNum];
+				nowRoop_.edPartsWorlds[partsNum] = ATKData_.parts.edPartsWorlds[partsNum];
+			}
+		}
+		else {
+
+			//予備動作中向き変更
+			Vector3 move{};
+			//データ
+			move = input_->GetWASD();
+			if (input_->IsControllerActive()) {
+				move = input_->GetjoyStickLV3();
+			}
+
+			move.SetNormalize();
+			//カメラ方向に向ける
+			move = TransformNormal(move, camera_->GetMainCamera().matWorld_);
+			move.y = 0;
+
+			if (move != Vector3(0, 0, 0)) {
+				world_.rotate_.y = GetYRotate({ move.x,move.z });
+
+				move *= ATKData_.spd;
+
+				world_.translate_ += move;
+			}
+			else {
+				Vector3 offset = { 0,0,1 };
+				offset = TransformNormal(offset, camera_->GetMainCamera().matWorld_);
+
+				world_.rotate_.y = GetYRotate({ offset.x,offset.z });
+
+				offset *= ATKData_.spd;
+
+				offset.y = 0;
+
+				world_.translate_ += offset;
+			}
+
+
+			float t = (float)updateATKData_.count / (float)ATKData_.AttackTime;
+
+			int Index = 0;
+			for (auto& world : mWorlds) {
+				world.rotate_ = Esing(nowRoop_.stPartsWorlds[Index].rotate_, nowRoop_.edPartsWorlds[Index].rotate_, t);
+				Index++;
+			}
+
+			updateATKData_.count++;
+			//条件を満たしたら次の状態へ
+			if (updateATKData_.count >= ATKData_.AttackTime) {
+				t = 1;
+				int Index = 0;
+				for (auto& world : mWorlds) {
+					world.rotate_ = Esing(nowRoop_.stPartsWorlds[Index].rotate_, nowRoop_.edPartsWorlds[Index].rotate_, t);
+					Index++;
+				}
+
+				atkState_ = ATKState::Rigor;
+				updateATKData_.count = 0;
+				ATKAnimationSetup_ = false;
+			}
 
 		}
 	}
@@ -345,23 +567,19 @@ void Player::UpdateATK() {
 
 			//攻撃入力フラグON
 			if (updateATKData_.nextATK && ATKData_.ATKDerivation.size() != 0) {
-				
-				for (auto& ATKdata : ATKData_.ATKDerivation) {
-					if (updateATKData_.isPushY&&ATKdata.isYATK) {
-						//新しいデータ代入
-						ATKData_ = ATKdata;
-						updateATKData_ = ATKUpdateData{};
-					}
-					else if (!updateATKData_.isPushY && !ATKdata.isYATK) {
-						ATKData_ = ATKdata;
-						updateATKData_ = ATKUpdateData{};
-					}
-				}
 
+				ATKData_ = ATKData_.ATKDerivation[0];
+
+				updateATKData_ = ATKUpdateData{};
+				ATKAnimationSetup_ = false;
+				atkState_ = ATKState::Extra;
+
+				ATKConboCount++;
 			}
 			else {
 				//移動状態に変更
 				stateRequest_ = State::Move;
+				ATKConboCount = 0;
 			}
 #pragma endregion
 
@@ -370,12 +588,10 @@ void Player::UpdateATK() {
 #pragma endregion
 
 #pragma region 実行中のキー入力受付
-	if (updateATKData_.nextATK = input_->IsTriggerButton(kButtonY)) {
-		updateATKData_.isPushY = true;
-	}else if (updateATKData_.nextATK = input_->IsTriggerButton(kButtonB)) {
-		updateATKData_.isPushY = false;
-	}
 
+	if (input_->IsTriggerButton(kButtonB)||input_->TriggerKey(DIK_Z)) {
+		updateATKData_.nextATK = true;
+	}
 #pragma endregion
 
 

@@ -28,7 +28,11 @@ public:
 	/// </summary>
 	void LoadPopdata();
 
+	void Initialzie();
+
 	void Update();
+
+	void Draw();
 
 	std::unique_ptr<Enemy> PopEnemy();
 
@@ -42,11 +46,19 @@ private:
 	std::string filePath = "resources/enemyPopData.json";
 
 	//最大エリア数
-	static const int areaNum = 1;
+	static const int areaNum = 8;
 
 	//エリアの名前
 	std::string popAreaName[areaNum] = {
-		"PopArea1"
+		"PopArea1",
+		"PopArea2",
+		"PopArea3",
+		"PopArea4",
+		"PopArea5",
+		"PopArea6",
+		"PopArea7",
+		"PopArea8"
+		
 	};
 
 	//各アイテムのEnumClass
@@ -83,6 +95,5 @@ private:
 
 	std::vector<WorldTransform>flagWorlds_;
 
-	std::vector<WorldTransform>ringWorlds_;
 };
 

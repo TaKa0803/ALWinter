@@ -4,6 +4,8 @@ class Plane :public GameObject {
 
 public:
 
+	Plane();
+
 	void Initialize();
 
 	void DebagWindow();
