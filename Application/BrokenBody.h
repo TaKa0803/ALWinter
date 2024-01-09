@@ -1,5 +1,6 @@
 #pragma once
 #include"Instancing/InstancingGameObject.h"
+#include<list>
 
 class BrokenBody :public InstancingGameObject {
 
@@ -21,18 +22,25 @@ public:
 
 	void Update();
 
+	void Draw();
+
 	void EffectOccurred(const WorldTransform& world, int spawnNum);
 
+	
 	struct EffectData {
 		WorldTransform world;
 		Vector3 velocity_;
 		Vector3 accce_ = {0,-0.1f,0};
 		float BulletForce=0.4f;
-		const int maxDeadCount = 480;
+		const int maxDeadCount = 120;
 		int deadCount = 0;
+		bool isdead_ = false;
+
 	};
 
+	float upSPD_ = 1.0f;
 
-	std::vector<std::unique_ptr<EffectData>>effectDatas_;
+	
+	std::list<EffectData*>effectDatas_;
 
 };

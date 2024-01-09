@@ -11,7 +11,7 @@
 #include"Enemy.h"
 #include"EnemyPopManager.h"
 #include"Sprite/Sprite.h"
-
+#include"BrokenBody.h"
 
 class GameScene : public IScene {
 
@@ -115,4 +115,7 @@ private:
 	float nowFrameCountEnemy_ = 0;
 
 	bool serchComplete_ = false;
+
+
+	BrokenBody* brokenBody_;
 };

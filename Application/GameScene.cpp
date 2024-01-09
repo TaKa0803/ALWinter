@@ -62,6 +62,10 @@ GameScene::GameScene() {
 
 	texture = TextureManager::LoadTex("resources/UI/result.png");
 	resultText_.reset(Sprite::Create(texture, { 320,90 }, { 320,90 }, { 830,290 }));
+
+
+	brokenBody_ = BrokenBody::GetInstance();
+	
 }
 
 GameScene::~GameScene() {
@@ -106,7 +110,11 @@ void GameScene::Initialize() {
 
 	serchComplete_ = false;
 
+
+	brokenBody_->Initialize();
 }
+
+
 
 void GameScene::Update() {
 
@@ -157,6 +165,8 @@ void GameScene::Update() {
 		Collision();
 
 		LimitUI();
+
+		brokenBody_->Update();
 #pragma endregion
 
 		break;
@@ -176,6 +186,8 @@ void GameScene::Update() {
 
 	SceneChange();
 
+
+
 }
 
 void GameScene::Draw() {
@@ -193,9 +205,9 @@ void GameScene::Draw() {
 	//プレイヤー
 	player_->Draw(camera_->GetViewProjectionMatrix());
 
-	//インスタンシングのモデルを全描画
-	InstancingModelManager::GetInstance()->DrawAllModel(camera_->GetViewProjectionMatrix());
+	brokenBody_->Draw();
 
+	
 	switch (scene_) {
 	case GameScene::Game:
 
@@ -210,6 +222,8 @@ void GameScene::Draw() {
 	}
 
 
+	//インスタンシングのモデルを全描画
+	InstancingModelManager::GetInstance()->DrawAllModel(camera_->GetViewProjectionMatrix());
 
 
 }
@@ -411,8 +425,8 @@ void GameScene::ClearUIUpdate() {
 
 		}
 		else {
-			num100_->SetTVTranslate({ 1.0f, 0 });
-			num10_->SetTVTranslate({ 1.0f, 0 });
+			num100_->SetTVTranslate({ -1.0f, 0 });
+			num10_->SetTVTranslate({ -1.0f, 0 });
 		}
 
 
@@ -458,20 +472,20 @@ void GameScene::ClearUIUpdate() {
 void GameScene::LimitUI() {
 
 	//分に変換
-	float minute = (float)limitMinute / 60.0f;
+	int minute = limitMinute / 60;
 
 	int second = (int)minute % 10;
 
-	num1_->SetTVTranslate({ (float)second / 10.0f, 0 });
+	num1_->SetTVTranslate({ ((float)second / 10.0f)-0.1f, 0 });
 
 	//二桁目のみの情報取得
-	minute -= second;
+	minute = minute - second;
 
-	minute /= 100;
+	int minute2 =minute /10;
 
-	minute -= 0.1f;
+	
 
-	num10_->SetTVTranslate({ float(minute),0 });
+	num10_->SetTVTranslate({ ((float)minute2/10.0f)-0.1f,0 });
 }
 
 

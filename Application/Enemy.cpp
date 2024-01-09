@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include"RandomNum/RandomNum.h"
 #include"TextureManager/TextureManager.h"
+#include"BrokenBody.h"
 
 void Enemy::Initialize(const Vector3& position, const WorldTransform* playerWorld) {
 	InstancingGameObject::Initialize("player");
@@ -187,6 +188,8 @@ void Enemy::Update() {
 			}
 			else {
 				isDead_ = true;
+				BrokenBody*BB= BrokenBody::GetInstance();
+				BB->EffectOccurred(world_,10);
 			}
 
 		}
